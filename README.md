@@ -1,17 +1,17 @@
-# Ansible Hadoop HA - Initial modification by Patrik Ohlson - ZDi.it
-
+# Ansible Hadoop HA
+Original by [acorbacho@nflabs.com](mailto:acorbacho@nflabs.com) 
+Modified by Patrik Ohlson - ZDi.it
 
 # Ansible Hadoop
-**Need Help?:** [Issues Tracking](https://github.com/NFLabs/ansible-hadoop/issues) | [acorbacho@nflabs.com](mailto:acorbacho@nflabs.com) <br/>
 **Contributing:** [Contribution Guide](https://github.com/NFLabs/ansible-hadoop/blob/master/CONTRIBUTING.md)<br/>
 **License:** [Apache 2.0](https://github.com/NFLabs/ansible-hadoop/blob/master/LICENSE)
 
-Ansible Haddop is a playbook that help you to deploy a new Hadoop (CDH4) and Spark cluster on a CentOS 6 or RHEL 6 environment using Ansible.
+Ansible Haddop is a playbook that help you to deploy a new Hadoop HA / Zookeeper cluster using Ansible.
 
 The playbooks can:
 
  1. Deploy a fully functional Hadoop cluster **with High Availability (HA) and automatic failover**.
- 2. Deploy additional nodes to scale the cluster (datanodes and spark workers)
+ 2. Deploy additional nodes to scale the cluster
 
 ### List of services 
  * Hadoop
