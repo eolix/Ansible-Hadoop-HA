@@ -1,5 +1,5 @@
 ---
-# file: roles/cdh_hadoop_common/tasks/main.yml
+# file: roles/ha_hadoop_common/tasks/main.yml
 
 - name: install base Hadoop packages via yum
   yum: name={{ item }} state=installed

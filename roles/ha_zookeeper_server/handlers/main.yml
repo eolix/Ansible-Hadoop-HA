@@ -1,5 +1,5 @@
 ---
-# file: roles/cdh_zookeeper_server/handlers/main.yml
+# file: roles/ha_zookeeper_server/handlers/main.yml
 
 - name: start zookeeper
   shell: hadoop-daemon.sh start journalnode

@@ -1,5 +1,5 @@
 ---
-# file: roles/cdh_namenode_standby/tasks/main.yml
+# file: roles/ha_namenode_standby/tasks/main.yml
 
 - name: install hadoop-hdfs-namenode via yum
   yum: name=hadoop-hdfs-namenode state=installed

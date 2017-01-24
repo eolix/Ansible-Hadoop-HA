@@ -1,5 +1,5 @@
 ---
-# file: roles/cdh_hadoop_config/tasks/main.yml
+# file: roles/ha_hadoop_config/tasks/main.yml
 
 
 - name: Copy Hadoop / HDFS configuration files

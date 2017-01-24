@@ -1,5 +1,5 @@
 ---
-# file: roles/cdh_common/tasks/main.yml
+# file: roles/ha_common/tasks/main.yml
 
 - name: Configure Hadoop and Zookeeper path variables 
   copy: src=.bashrc dest=/root/.bashrc

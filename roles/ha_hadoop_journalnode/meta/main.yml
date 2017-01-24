@@ -1,3 +1,3 @@
 ---
 dependencies:
-  - cdh_hadoop_config
+  - ha_hadoop_config

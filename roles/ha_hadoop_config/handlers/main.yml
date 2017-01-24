@@ -1,5 +1,5 @@
 ---
-# file: roles/cdh_hadoop_config/handlers/main.yml
+# file: roles/ha_hadoop_config/handlers/main.yml
 
 - name: restart hadoop-hdfs-namenode
   service: name=hadoop-hdfs-namenode state=restarted

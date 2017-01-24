@@ -1,5 +1,5 @@
 ---
-# file: roles/cdh_hadoop_journalnode/handlers/main.yml
+# file: roles/ha_hadoop_journalnode/handlers/main.yml
 
 - name: restart hadoop-hdfs-journalnode
   service: name=hadoop-hdfs-journalnode state=restarted enabled=yes
