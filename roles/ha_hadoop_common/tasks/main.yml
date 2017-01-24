@@ -1,0 +1,18 @@
+---
+# file: roles/cdh_hadoop_common/tasks/main.yml
+
+- name: install base Hadoop packages via yum
+  yum: name={{ item }} state=installed
+  with_items:
+    - hadoop
+    - hadoop-hdfs
+    - hadoop-yarn
+  tags:
+    - hadoop
+    - slaves
+
+- name: add hdfs user to sudoers
+  template: src=sudoers dest=/etc/sudoers owner=root group=root mode=0440
+  tags:
+    - hadoop
+    - slaves

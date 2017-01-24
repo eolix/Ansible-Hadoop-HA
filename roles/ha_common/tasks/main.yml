@@ -1,0 +1,23 @@
+---
+# file: roles/cdh_common/tasks/main.yml
+
+- name: Configure Hadoop and Zookeeper path variables 
+  copy: src=.bashrc dest=/root/.bashrc
+  tags:
+    - hadoop
+    - slaves
+    - zookeeper
+
+- name: Download and install Zookeeper
+  shell: chdir=~ wget https://archive.apache.org/dist/zookeeper/current/zookeeper-3.4.9.tar.gz && tar -zxvf ~/zookeeper* && mv ~/zookeeper* /usr/local/zookeeper
+  tags:
+    - hadoop
+    - slaves
+    - zookeeper
+
+- name: Download and install Hadoop
+  shell: chdir=~ wget https://archive.apache.org/dist/hadoop/core/hadoop-2.7.3/hadoop-2.7.3.tar.gz && tar -zxvf ~/hadoop* && mv ~/hadoop* /usr/local/hadoop
+  tags:
+    - hadoop
+    - slaves
+    - zookeeper

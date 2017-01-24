@@ -1,0 +1,23 @@
+---
+# file: roles/cdh_hadoop_datanode/tasks/main.yml
+
+- name: create the datanode directory
+  file: path={{ item }} owner=hdfs group=hdfs state=directory
+  with_items: hadoop.dfs_dir_dn
+  tags:
+    - hadoop
+    - slaves
+
+- name: install hadoop-hdfs-datanode via yum
+  yum: name=hadoop-hdfs-datanode state=latest
+  tags:
+    - hadoop
+    - slaves
+  notify:
+    - restart hadoop-hdfs-datanode
+
+- name: configure rsyslog for hadoop-hdfs-datanode
+  template: src=rsyslog.conf dest=/etc/rsyslog.d/60-hadoop-hdfs-datanode.conf owner=root group=root mode=0644
+  tags: rsyslog
+  notify:
+    - restart rsyslog

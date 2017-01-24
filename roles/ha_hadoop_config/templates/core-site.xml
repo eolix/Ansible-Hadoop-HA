@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<!-- {{ ansible_managed }} -->
+
+<configuration>
+
+    <property>
+        <name>fs.defaultFS</name>
+        <value>hdfs://{{ site_name|lower }}</value>
+        <final>true</final>
+    </property>
+
+    <property>
+        <name>dfs.journalnode.edits.dir</name>
+        <value>{{ hadoop['dfs_dir_parent'] }}{{ hadoop['dfs_dir_jn'] }}</value>
+    </property>
+
+</configuration>

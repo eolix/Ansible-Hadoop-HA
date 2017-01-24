@@ -19,24 +19,24 @@
 
 - hosts: zookeepers
   roles:
-    - cdh_zookeeper_server
+    - ha_zookeeper_server
 
 - hosts: journalnodes
   roles:
-    - cdh_hadoop_journalnode
+    - ha_hadoop_journalnode
 
 # Create first nameNode
 ## This will be the active node
 - hosts: namenodes[0]
   roles:
-    - cdh_hadoop_namenode_active
+    - ha_hadoop_namenode_active
 
 
 # Create standby datanode
 ##
 - hosts: namenodes[1]
   roles:
-    - cdh_hadoop_namenode_standby
+    - ha_hadoop_namenode_standby
 
 # Starting Hadoop HDFS Zookeeper Failover Controller
 ##
@@ -49,5 +49,5 @@
 ##
 - hosts: datanodes
   roles:
-    - cdh_hadoop_datanode
+    - ha_hadoop_datanode
 

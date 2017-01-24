@@ -1,0 +1,6 @@
+---
+# file: roles/cdh_zookeeper_server/handlers/main.yml
+
+- name: start zookeeper
+  shell: hadoop-daemon.sh start journalnode
+  ignore_errors: yes

@@ -1,0 +1,15 @@
+---
+# file: roles/cdh_zookeeper_server/tasks/main.yml
+
+
+
+- name: configure ZooKeeper in /usr/local/zookeeper/conf
+  template: src=zoo.cfg dest=/usr/local/zookeeper/conf/zoo.cfg mode=0644
+  tags:
+    - zookeeper
+
+- name: initialize ZooKeeper
+  command: creates={{ hadoop['dfs_dir_parent'] }}/zookeeper/myid
+  notify:
+  - start zookeeper
+  tags: zookeeper

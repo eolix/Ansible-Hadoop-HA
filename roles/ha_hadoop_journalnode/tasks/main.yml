@@ -1,0 +1,21 @@
+---
+# file: roles/cdh_hadoop_journalnode/tasks/main.yml
+# see http://touk.pl/blog/en/2012/10/30/hadoop-ha-setup/ and
+# http://hadoop.apache.org/docs/current/hadoop-yarn/hadoop-yarn-site/HDFSHighAvailabilityWithQJM.html
+
+- name: create the journalnode directory
+  file: path={{ hadoop.dfs_dir_parent }}{{ hadoop.dfs_dir_jn }} owner=hdfs group=hdfs state=directory
+  tags: hadoop
+
+- name: install hadoop-hdfs-journalnode via yum
+  yum: name=hadoop-hdfs-journalnode state=latest
+  tags:
+    - hadoop
+  notify:
+    - restart hadoop-hdfs-journalnode
+
+- name: configure rsyslog for hadoop-hdfs-journalnode
+  template: src=rsyslog.conf dest=/etc/rsyslog.d/60-hadoop-hdfs-journalnode.conf owner=root group=root mode=0644
+  tags: rsyslog
+  notify:
+    - restart rsyslog

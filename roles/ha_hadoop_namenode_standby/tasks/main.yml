@@ -1,0 +1,34 @@
+---
+# file: roles/cdh_namenode_standby/tasks/main.yml
+
+- name: install hadoop-hdfs-namenode via yum
+  yum: name=hadoop-hdfs-namenode state=installed
+  tags: hadoop
+
+- name: create the name node data directory
+  file: path={{ hadoop.dfs_dir_parent  }}{{ hadoop.dfs_dir_nn }} owner=hdfs group=hdfs state=directory
+  tags: hadoop
+
+
+- name: wait for the first namenode to come online
+  wait_for: host={{ hostvars[groups['namenodes'][0]].ipv4_address }} port=50070
+  tags: hadoop
+
+- name: bootstrap the standby namenode
+  shell: creates={{ hadoop.dfs_dir_parent  }}{{ hadoop.dfs_dir_nn }}/.bootstrapped su - hdfs -c "hdfs namenode -bootstrapStandby"; touch {{ hadoop.dfs_dir_parent  }}{{ hadoop.dfs_dir_nn }}/.bootstrapped
+  tags: hadoop
+
+- name: install hadoop-hdfs-zkfc (Hadoop HDFS Zookeeper Failover Controller) via yum
+  yum: name=hadoop-hdfs-zkfc state=installed
+  tags: hadoop 
+
+- name: start standby datanode
+  service: name=hadoop-hdfs-namenode state=restarted enabled=yes
+  tags:
+    - hadoop
+
+- name: configure rsyslog for hadoop-hdfs-namenode
+  template: src=rsyslog.conf dest=/etc/rsyslog.d/60-hadoop-hdfs-namenode.conf owner=root group=root mode=0644
+  tags: rsyslog
+  notify:
+    - restart rsyslog
