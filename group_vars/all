@@ -17,7 +17,7 @@ install_oracle_jdk: True
 ip_range: 192.168.10.1-192.168.10.255
 
 hadoop:
-  dfs_dir_parent: /var/HA/data/
+  dfs_dir_parent: /var/HA/data
   dfs_dir_nn: /namenode
   dfs_dir_nn: /datanode
   dfs_dir_jn: /jn
