@@ -1,0 +1,45 @@
+---
+# Restart Configuration
+#
+
+- hosts: all
+  tasks:
+    - name: determine interface
+      set_fact: ipv4_address="{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}"
+
+# Restart zookeeper
+##
+- hosts: zookeepers
+  tasks:
+    - name: restarting zookeepers
+      service: name=zookeeper-server state=restarted
+      tags:
+        - zookeepers
+
+# Restart journalnodes
+##
+- hosts: journalnodes
+  tasks:
+    - name: restarting journalnodes
+      service: name=hadoop-hdfs-journalnode state=restarted
+      tags:
+        - journalnodes
+
+# Restart HDFS masters
+##
+- hosts: namenodes
+  tasks:
+    - name: restarting namenodes
+      service: name=hadoop-hdfs-namenode state=restarted
+      tags:
+        - namenodes
+
+# Restart HDFS datanodes
+##
+- hosts: datanodes
+  tasks:
+    - name: restarting datanodes
+      service: name=hadoop-hdfs-datanode state=restarted
+      tags:
+        - datanodes
+

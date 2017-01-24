@@ -1,0 +1,53 @@
+---
+# Site Configuration
+# ==================
+
+- hosts: all
+  tasks:
+    - name: determine interface
+      set_fact: ipv4_address="{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}"
+      tags:
+        [slaves]
+
+# Deploy the default roles to all nodes
+- hosts: all
+  roles:
+    - common
+
+# HADOOP
+# ======
+
+- hosts: zookeepers
+  roles:
+    - cdh_zookeeper_server
+
+- hosts: journalnodes
+  roles:
+    - cdh_hadoop_journalnode
+
+# Create first nameNode
+## This will be the active node
+- hosts: namenodes[0]
+  roles:
+    - cdh_hadoop_namenode_active
+
+
+# Create standby datanode
+##
+- hosts: namenodes[1]
+  roles:
+    - cdh_hadoop_namenode_standby
+
+# Starting Hadoop HDFS Zookeeper Failover Controller
+##
+- hosts: namenodes
+  tasks:
+    - name: starting Hadoop HDFS Zookeeper Failover Controller
+      service: name=hadoop-hdfs-zkfc state=started
+
+# Add datanodes
+##
+- hosts: datanodes
+  roles:
+    - cdh_hadoop_datanode
+

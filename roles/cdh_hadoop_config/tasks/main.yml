@@ -1,0 +1,24 @@
+---
+# file: roles/cdh_hadoop_config/tasks/main.yml
+
+- name: copy /etc/hadoop/conf.empty to /etc/hadoop/conf
+  command: creates=/etc/hadoop/conf cp -R -p /etc/hadoop/conf.empty /etc/hadoop/conf
+  tags:
+    - hadoop
+    - configuration
+    - slaves
+
+- name: configure hadoop in /etc/hadoop/conf
+  template: src={{ item }} dest=/etc/hadoop/conf/{{ item }} owner=root group=root mode=0644
+  with_items:
+    - core-site.xml
+    - hadoop-env.sh
+    - hadoop-metrics2.properties
+    - hdfs-site.xml
+    - slaves
+    - dfs.hosts.exclude
+  tags:
+    - hadoop
+    - configuration
+    - restartHdfs
+    - slaves

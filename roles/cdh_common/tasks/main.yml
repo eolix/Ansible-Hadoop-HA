@@ -1,0 +1,12 @@
+---
+# file: roles/cdh_common/tasks/main.yml
+
+- name: Deploy the Cloudera Repository
+  copy: src=etc/cloudera-CDH4.repo dest=/etc/yum.repos.d/cloudera-CDH4.repo
+  tags:
+    - hadoop
+    - slaves
+    - zookeeper
+
+
+

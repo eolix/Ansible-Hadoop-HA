@@ -1,0 +1,78 @@
+---
+# file: roles/common/tasks/main.yml
+
+- name: mount / with inode_readahead_blks=128,noatime,commit=30,errors=remount-ro
+  shell: creates=/etc/fstab.bak chdir=/etc cp fstab fstab.bak && sed -i "s/ errors=remount-ro/ inode_readahead_blks=128,noatime,commit=30,errors=remount-ro/" fstab
+  tags:
+    - slaves
+
+- name: install commonly used packages via yum
+  yum: name={{ item }} state=installed
+  with_items:
+    - curl
+    - nano
+    - unzip
+    - wget
+    - lzo-devel
+    - ntp
+    - rsyslog
+    - libselinux-python
+  tags:
+    - ntp
+    - slaves
+
+- name: install EPEL via YUM
+  shell: rpm -Uvh https://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+  ignore_errors: yes
+
+- name: configure /etc/security/limits.conf with high max file descriptors (soft/hard)
+  template: src=limits.conf dest=/etc/security/limits.conf mode=0644
+  tags:
+    - slaves
+
+- name: create the hosts file for all machines
+  template: backup=yes src=hosts dest=/etc/hosts
+  when: update_hosts
+  tags:
+    - slaves
+
+- name: configure rsyslog with the imfile module
+  template: src=rsyslog.conf dest=/etc/rsyslog.d/30-imfile.conf owner=root group=root mode=0644
+  tags: rsyslog
+  notify:
+    - restart rsyslog
+
+- name: configure NTP in /etc/ntp.conf
+  template: src=ntp.conf dest=/etc/ntp/ntp.conf
+  notify:
+    - restart ntpd
+  tags: ntp
+
+- name: make sure NTP is enabled and started
+  service: name=ntpd enabled=yes state=started
+  tags: ntp
+
+- name: remove OpenJDK
+  yum: name={{ item }} state=removed
+  with_items: 
+   - java
+   - jdk
+  when: install_oracle_jdk
+  tags:
+    - slaves
+
+- name: install Oracle JDK 7.67
+  shell: chdir=/tmp wget --no-check-certificate --no-cookies --header 'Cookie:oraclelicense=accept-securebackup-cookie' http://download.oracle.com/otn-pub/java/jdk/7u67-b01/jdk-7u67-linux-x64.rpm && rpm -Uvh /tmp/jdk-7u67-linux-x64.rpm
+  tags:
+    - slaves
+  when: install_oracle_jdk
+
+- name: disable SELinux in conf file
+  lineinfile: dest=/etc/sysconfig/selinux regexp='^SELINUX=' line='SELINUX=disabled' state=present
+  tags:
+    - slaves
+
+- name: disable SELinux dynamically
+  shell: creates=/etc/sysconfig/selinux.disabled setenforce 0 ; touch /etc/sysconfig/selinux.disabled
+  tags:
+    - slaves

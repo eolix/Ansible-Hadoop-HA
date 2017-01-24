@@ -1,0 +1,28 @@
+# Hadoop Nodes
+# ============
+
+[zookeepers]
+nn1.hacluster.local zookeeper_id=1
+nn2.hacluster.local zookeeper_id=2
+dn1.hacluster.local zookeeper_id=3
+dn2.hacluster.local zookeeper_id=4
+dn3.hacluster.local zookeeper_id=5
+
+# HADOOP DEPLOYMENT
+# =================
+
+[journalnodes]
+nn1.hacluster.local
+nn2.hacluster.local
+dn1.hacluster.local
+dn2.hacluster.local
+dn3.hacluster.local
+
+[namenodes]
+nn1.hacluster.local
+nn2.hacluster.local
+
+[datanodes]
+dn1.hacluster.local
+dn2.hacluster.local
+dn3.hacluster.local
